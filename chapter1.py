@@ -1,15 +1,17 @@
 import cv2
-print("Package Imported")
+import numpy as np
 
 #Upload Image
 # img = cv2.imread("Ressources/computer.jpg")
 # cv2.imshow("Output",img)
 #cv2.waitKey(0)
 
+kernel = np.ones((5,5),np.uint8)
 img = cv2.imread("Ressources/dogs.png", cv2.IMREAD_UNCHANGED)
 imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) #image with Gray color
 imgBlur = cv2.GaussianBlur(imgGray,(7,7),0) #image Blur
 imgCanny = cv2.Canny(img,100,100)#image Canny
+imgDilate = cv2.dilate(imgCanny,kernel,iterations=1)#image Dilate
 
 scale_percent = 1000  # percent of original size
 width = int(imgGray.shape[1] * scale_percent / 5000)
@@ -20,10 +22,12 @@ dim = (width, height)
 grayImage = cv2.resize(imgGray, dim, interpolation=cv2.INTER_AREA)
 blurImage = cv2.resize(imgBlur, dim, interpolation=cv2.INTER_AREA)
 cannyImage = cv2.resize(imgCanny, dim, interpolation=cv2.INTER_AREA)
+dilateImage = cv2.resize(imgDilate, dim, interpolation=cv2.INTER_AREA)
 
 cv2.imshow("Gray Image", grayImage)
 cv2.imshow("Blur Image", blurImage)
 cv2.imshow("Canny Image", cannyImage)
+cv2.imshow("Dialte Image", dilateImage)
 cv2.waitKey(0)
 
 # Uload video
